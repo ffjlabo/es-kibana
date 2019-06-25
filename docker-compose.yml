@@ -1,0 +1,14 @@
+version: '3'
+services: 
+  elasticsearch:
+    image: elasticsearch:7.1.1
+    volumes:
+      - ./data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    environment: 
+      - discovery.type=single-node
+  kibana:
+    image: kibana:7.1.1
+    ports: 
+      - "5601:5601"
