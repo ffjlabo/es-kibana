@@ -1,14 +1,21 @@
-version: '3'
-services: 
+version: "3"
+services:
   elasticsearch:
-    image: elasticsearch:7.1.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
     volumes:
       - ./data:/usr/share/elasticsearch/data
+      - ./install-plugin.sh:/tmp/install-plugin.sh
     ports:
       - "9200:9200"
-    environment: 
+    environment:
       - discovery.type=single-node
+    entrypoint: >
+      bash -c "chmod +x /tmp/install-plugin.sh &&
+               /tmp/install-plugin.sh org.codelibs:elasticsearch-analysis-kuromoji-ipadic-neologd:7.2.0 &&
+              docker-entrypoint.sh"
+
   kibana:
-    image: kibana:7.1.1
-    ports: 
+    image: docker.elastic.co/kibana/kibana:7.2.0
+    ports:
       - "5601:5601"
+
